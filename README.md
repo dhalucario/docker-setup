@@ -74,3 +74,19 @@ You can also connect to the container with a [vnc-viewer client](https://www.rea
 
 If you want to create a snapshot from the current ``application`` database cd into the docker directory and run ``./dump-mysql.sh``.
 You'll be asked which container you want to run. **WARNING** The destination file in the dumps directory will be overriden without asking.
+
+## Hints for Linux Users (Fedora)
+
+### WARNING
+This manual requires you to have a basic understanding of linux.
+Docker containers use the permission id's from inside the containers if the docker-compose or the Dockerfile isn't configured properly.
+Port 80 cant be used if the user in the docker container isn`t root so we are using 8088 on both sides, host and container
+
+The [docker docs](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) also provides some more information for Linux users. 
+To use docker we need to add our user to the docker group and relog into the account.
+``sudo usermod -aG docker $USER``
+
+Docker requires some extra permissions in the workspace if we use SELinux.
+We change the SELinux Context for files using [chcon](https://linux.die.net/man/1/chcon)
+``chcon -R -t svirt_sandbox_file_t ~/workspace/``
+
